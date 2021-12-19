@@ -11,7 +11,7 @@ const CLIENT_ID = "1000.Z93TAUSXJBEU9ENH3TN47OQGO5USMQ"
 
 const ContactList = ({ history, location }) => {
   const parsed = QueryString.parse(location.hash);
-  const [contactListData, setContactListData] = useState();
+  const [contactListData, setContactListData] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const [contactIdtoDelete, setContactIdtoDelete] = useState();
@@ -20,8 +20,7 @@ const ContactList = ({ history, location }) => {
    if(noRedirect){
      return;
    }
-   window.location.href =
-     `https://accounts.zoho.com/oauth/v2/auth?client_id=${CLIENT_ID}&response_type=token&scope=ZohoInvoice.contacts.Create,ZohoInvoice.contacts.UPDATE,ZohoInvoice.contacts.READ,ZohoInvoice.contacts.DELETE&redirect_uri=${REDIRECT_URL}`;
+   window.location.href =`https://accounts.zoho.com/oauth/v2/auth?client_id=${CLIENT_ID}&response_type=token&scope=ZohoInvoice.contacts.Create,ZohoInvoice.contacts.UPDATE,ZohoInvoice.contacts.READ,ZohoInvoice.contacts.DELETE&redirect_uri=${REDIRECT_URL}`;
   };
   const getContacts = () => {
     const headers = {
@@ -140,6 +139,7 @@ const ContactList = ({ history, location }) => {
             </tr>
           </thead>
           <tbody>
+            {contactListData && contactListData.length===0 ? <tr><td colSpan={5}><h4 className="text-center">No contacts found</h4></td></tr> : null }
             {contactListData &&
               contactListData.map((contact, index) => {
                 return (
